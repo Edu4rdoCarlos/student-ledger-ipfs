@@ -4,8 +4,6 @@ services:
     container_name: student-ledger-ipfs
     restart: unless-stopped
     ports:
-      # API HTTP - usado pelo backend
-      - "${IPFS_API_PORT:-5001}:5001"
       # Gateway HTTP - acesso público aos arquivos
       - "${IPFS_GATEWAY_PORT:-8080}:8080"
       # Swarm - comunicação P2P (opcional para rede privada)
@@ -19,3 +17,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - student-ledger-network
+
+networks:
+  student-ledger-network:
+    external: true
