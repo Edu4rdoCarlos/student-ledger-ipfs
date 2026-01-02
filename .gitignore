@@ -1,0 +1,11 @@
+# IPFS data
+data/ipfs/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+
+# Swarm key (se usar rede privada)
+swarm.key

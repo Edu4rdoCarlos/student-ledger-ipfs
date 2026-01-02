@@ -1,0 +1,21 @@
+services:
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: student-ledger-ipfs
+    restart: unless-stopped
+    ports:
+      # API HTTP - usado pelo backend
+      - "${IPFS_API_PORT:-5001}:5001"
+      # Gateway HTTP - acesso público aos arquivos
+      - "${IPFS_GATEWAY_PORT:-8080}:8080"
+      # Swarm - comunicação P2P (opcional para rede privada)
+      - "${IPFS_SWARM_PORT:-4001}:4001"
+    volumes:
+      - ./data/ipfs:/data/ipfs
+    environment:
+      - IPFS_PROFILE=server
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
