@@ -1,12 +1,12 @@
 # Academic Ledger IPFS
 
-Cluster IPFS privado para armazenamento distribuído de documentos acadêmicos criptografados.
+Cluster IPFS privado para armazenamento distribuído de documentos acadêmicos.
 
 ## Sobre
 
 Este projeto é o módulo de armazenamento do sistema Academic Ledger. Armazena PDFs de documentos acadêmicos (diplomas, históricos, certificados) de forma distribuída e imutável.
 
-**O que armazena:** Arquivos criptografados (AES-256-GCM) enviados pelo backend.
+**O que armazena:** Arquivos PDF enviados pelo backend.
 
 **Relacionado a:**
 - [student-ledger-api](../student-ledger-api) - Backend que envia os arquivos
