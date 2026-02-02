@@ -10,7 +10,7 @@ Este projeto é o módulo de armazenamento do sistema Academic Ledger. Armazena 
 
 **Relacionado a:**
 - [student-ledger-api](../student-ledger-api) - Backend que envia os arquivos
-- [student-ledger](../student-ledger) - Rede Hyperledger Fabric (armazena apenas o CID)
+- [student-ledger](../student-ledger) - Rede Hyperledger Fabric
 
 ## Tecnologias
 
