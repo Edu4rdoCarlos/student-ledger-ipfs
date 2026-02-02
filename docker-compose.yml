@@ -1,25 +1,42 @@
+x-ipfs: &ipfs-common
+  build:
+    context: .
+    dockerfile: Dockerfile.ipfs
+  restart: unless-stopped
+  env_file: .env
+  networks:
+    - fabric-net
+  healthcheck:
+    test: ["CMD", "ipfs", "id"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+    start_period: 15s
+
 services:
-  ipfs:
-    image: ipfs/kubo:latest
-    container_name: student-ledger-ipfs
-    restart: unless-stopped
+  ipfs-orderer:
+    <<: *ipfs-common
+    container_name: student-ledger-ipfs-orderer
     ports:
-      # Gateway HTTP - acesso público aos arquivos
-      - "${IPFS_GATEWAY_PORT:-8080}:8080"
-      # Swarm - comunicação P2P (opcional para rede privada)
-      - "${IPFS_SWARM_PORT:-4001}:4001"
+      - "127.0.0.1:5443:5443"
+      - "127.0.0.1:4001:4001"
     volumes:
-      - ./data/ipfs:/data/ipfs
-    environment:
-      - IPFS_PROFILE=server
-    healthcheck:
-      test: ["CMD", "ipfs", "id"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - student-ledger-network
+      - ./data/ipfs-orderer:/data/ipfs
+      - ./swarm.key:/data/ipfs/swarm.key:ro
+
+  ipfs-coordenacao:
+    <<: *ipfs-common
+    container_name: student-ledger-ipfs-coordenacao
+    ports:
+      - "127.0.0.1:5444:5443"
+      - "127.0.0.1:4002:4001"
+    volumes:
+      - ./data/ipfs-coordenacao:/data/ipfs
+      - ./swarm.key:/data/ipfs/swarm.key:ro
+    depends_on:
+      ipfs-orderer:
+        condition: service_healthy
 
 networks:
-  student-ledger-network:
+  fabric-net:
     external: true

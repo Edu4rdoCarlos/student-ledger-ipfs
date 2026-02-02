@@ -1,5 +1,6 @@
-# IPFS data
-data/ipfs/
+# IPFS data - ignora todo conteúdo exceto .gitkeep
+data/*
+!data/.gitkeep
 
 # Environment
 .env
@@ -9,3 +10,9 @@ data/ipfs/
 
 # Swarm key (se usar rede privada)
 swarm.key
+
+# Docs
+/docs
+# Certificados TLS para mTLS (não versionar - gerar localmente)
+certs/
+*.pem

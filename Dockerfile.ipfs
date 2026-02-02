@@ -1,0 +1,25 @@
+FROM alpine:latest AS tools
+RUN apk add --no-cache socat openssl readline
+
+FROM ipfs/kubo:latest
+
+USER root
+COPY --from=tools /usr/bin/socat /usr/bin/socat
+COPY --from=tools /usr/bin/openssl /usr/bin/openssl
+COPY --from=tools /lib/ld-musl-*.so.1 /lib/
+COPY --from=tools /usr/lib/libssl.so.3 /usr/lib/
+COPY --from=tools /usr/lib/libcrypto.so.3 /usr/lib/
+COPY --from=tools /usr/lib/libreadline.so.8 /usr/lib/
+COPY --from=tools /usr/lib/libncursesw.so.6 /usr/lib/
+
+COPY scripts/start-ipfs.sh /usr/local/bin/start-ipfs.sh
+RUN chmod +x /usr/local/bin/start-ipfs.sh
+
+USER ipfs
+
+ENV IPFS_TELEMETRY=off
+ENV LIBP2P_FORCE_PNET=1
+
+EXPOSE 4001 5443
+
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/start-ipfs.sh"]
